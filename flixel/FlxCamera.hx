@@ -608,7 +608,8 @@ class FlxCamera extends FlxBasic
 		
 		// TODO: catch this error when the dev actually messes up, not in the draw phase
 		if (graphic.isDestroyed)
-			throw 'Attempted to queue an invalid FlxDrawItem, did you destroy a cached sprite?';
+			trace("Attempted to queue an invalid FlxDrawItem, did you destroy a cached sprite?");
+		// throw 'Attempted to queue an invalid FlxDrawItem, did you destroy a cached sprite?';
 
 		itemToReturn.graphics = graphic;
 		itemToReturn.antialiasing = smooth;
@@ -771,7 +772,7 @@ class FlxCamera extends FlxBasic
 		}
 		else
 		{
-			var isColored = (transform != null && transform.hasRGBMultipliers());
+			var isColored = (transform != null #if !html5 && transform.hasRGBMultipliers() #end);
 			var hasColorOffsets:Bool = (transform != null && transform.hasRGBAOffsets());
 
 			#if FLX_RENDER_TRIANGLE
@@ -1016,8 +1017,13 @@ class FlxCamera extends FlxBasic
 			zoom = defaultZoom;
 		
 		// Use the game dimensions if width / height are <= 0
-		this.width = width <= 0 ? Math.ceil(FlxG.width / zoom) : width;
-		this.height = height <= 0 ? Math.ceil(FlxG.height / zoom) : height;
+		if (width <= 0)
+			width = Math.ceil(FlxG.width / zoom);
+		if (height <= 0)
+			height = Math.ceil(FlxG.height / zoom);
+			
+		this.width = width;
+		this.height = height;
 		_flashRect = new Rectangle(0, 0, width, height);
 
 		flashSprite.addChild(_scrollRect);

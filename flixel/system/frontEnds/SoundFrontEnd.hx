@@ -362,6 +362,8 @@ class SoundFrontEnd
 		volume = logToLinear(volume);
 		volume += Amount;
 		volume = linearToLog(volume);
+		var error:Float = 0.0001; // stupid floating point shit
+		volume = (volume <= (0.001 + error) ? 0 : volume);
 		showSoundTray(Amount > 0);
 	}
 

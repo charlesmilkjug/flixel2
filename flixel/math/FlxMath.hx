@@ -325,6 +325,7 @@ class FlxMath
 	{
 		return Math.sqrt(dx * dx + dy * dy);
 	}
+
 	#if !macro
 	/**
 	 * Find the distance (in pixels, rounded) between two FlxSprites, taking their origin into account
@@ -471,6 +472,7 @@ class FlxMath
 			return dx * dx + dy * dy < Distance * Distance;
 	}
 	#end
+
 	#end
 
 	/**
@@ -584,5 +586,23 @@ class FlxMath
 	public static inline function absInt(n:Int):Int
 	{
 		return (n > 0) ? n : -n;
+	}
+	/**
+	 * Performs a modulo operation to calculate the remainder of `a` divided by `b`.
+	 * 
+	 * The definition of "remainder" varies by implementation;
+	 * this one is similar to GLSL or Python in that it uses Euclidean division, which always returns positive,
+	 * while Haxe's `%` operator uses signed truncated division.
+	 * 
+	 * For example, `-5 % 3` returns `-2` while `FlxMath.mod(-5, 3)` returns `1`.
+	 * 
+	 * @param a The dividend.
+	 * @param b The divisor.
+	 * @return `a mod b`.
+	 */
+	public static inline function mod(a:Float, b:Float):Float
+	{
+		b = Math.abs(b);
+		return a - b * Math.floor(a / b);
 	}
 }
